@@ -35,7 +35,7 @@ targetDir=$2
 # global curl options
 # to disable progress bar, replace with -s
 # to enable verbose mode, add -v
-curlOptions='--progress-bar'
+curlOptions='--progress-bar --location'
 userAgent='Mozilla/5.0 (Windows NT 6.1; WOW64; rv:47.0) Gecko/20100101 Firefox/47.0'
 
 # check usage
@@ -120,7 +120,7 @@ do
           # get video link and type
           videoSource=$(curl $curlOptions -b $cookieFile --referer "http://$url$postURL" -A "$userAgent" "$video" | grep -o -P "<source src=\"http[s]*://[^.]*.tumblr.com/video_file/.*?>")
           # get video url
-          videoURL=$(echo "$videoSource" | grep -o -P "http[s]*://[^.]*.tumblr.com/video_file/[[:0-9A-Za-z]*/]*[0-9]*/tumblr_[A-Za-z0-9]*")
+          videoURL=$(echo "$videoSource" | grep -o -P "http[s]*://[^.]*.tumblr.com/video_file/[[:_0-9A-Za-z]*/]*[0-9]*/tumblr_[A-Za-z0-9]*")
           # construct filename with extension from type string
           videoFile=$(echo "$videoSource" | grep -o -P "tumblr_.*?>" | sed -e 's/<source src=\"//g' -e 's/\" type=\"video\//./g' -e 's/\">//g' -e 's/\//\_/g')
           # download video (if it doesn't exist)
